@@ -43,7 +43,17 @@ func CreateEmployee(c echo.Context) error {
 		return err
 	}
 
-	dbCon := mssql.GetConnection.GetConnection()
+	dbCon := mssql.GetDbConnection.GetDbConnection()
+
+	db := dbCon.Create(&employee)
+
+	if db.RowsAffected > 0 {
+		fmt.Printf("%s", db.Error)
+	}
+
+	if db.Error != nil {
+		fmt.Printf("%s", db.Error)
+	}
 
 	// defer c.Request().Body.Close()
 	// fmt.Println(c.Request().Body)
@@ -53,5 +63,5 @@ func CreateEmployee(c echo.Context) error {
 	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error)
 	// }
 	// log.Printf("this is your user %#v", employee)
-	return c.String(http.StatusOK, "We got your employee!!!")
+	return c.JSON(http.StatusOK, employee)
 }

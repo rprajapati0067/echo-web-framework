@@ -31,7 +31,7 @@ func main() {
 
 	e.GET("/getUser", controllers.GetUser)
 	e.PUT("/addUser", controllers.AddUser)
-	e.PUT("/employees", controllers.CreateEmployee)
+	e.POST("/employees", controllers.CreateEmployee)
 
 	e.Start(":8080")
 }
