@@ -7,6 +7,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/rprajapati0067/echo-web-framework/src/datasource/mssql"
+	"github.com/rprajapati0067/echo-web-framework/src/domain"
 )
 
 func GetUser(c echo.Context) error {
@@ -31,4 +33,25 @@ func AddUser(c echo.Context) error {
 	}
 	log.Printf("this is your user %#v", user)
 	return c.String(http.StatusOK, "We got your user!!!")
+}
+
+func CreateEmployee(c echo.Context) error {
+
+	employee := domain.Employee{}
+
+	if err := c.Bind(&employee); err != nil {
+		return err
+	}
+
+	dbCon := mssql.GetConnection.GetConnection()
+
+	// defer c.Request().Body.Close()
+	// fmt.Println(c.Request().Body)
+	// err := json.NewDecoder(c.Request().Body).Decode(&employee)
+	// if err != nil {
+	// 	log.Fatalf("Failed reading the request body %s", err)
+	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error)
+	// }
+	// log.Printf("this is your user %#v", employee)
+	return c.String(http.StatusOK, "We got your employee!!!")
 }

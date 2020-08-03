@@ -1,15 +1,25 @@
 package mssql
 
 import (
-	"github.com/jinzhu/gorm"
+	"fmt"
 
-	_ "github.com/jinzhu/gorm/dialects/mssql"
+	"github.com/jinzhu/gorm"
 )
 
-func GetDbConnection() {
+var (
+	GetDbConnection databaseConnectionInterface = &databaseCon{}
+)
 
-	//	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=candidates_db password=system sslmode=disable")
-	db, err := gorm.Open("mssql", "sqlserver://Aditi/ravisp:Jul@4362@LT212-RAVISP:1433?database=dbname")
+type databaseConnectionInterface interface {
+	GetDbConnection() *gorm.DB
+}
+
+type databaseCon struct {
+}
+
+func (dbCon *databaseCon) GetDbConnection() *gorm.DB {
+
+	db, err := gorm.Open("mssql", "sqlserver://ravi:System123@LT212-RAVISP:1433?database=employee_db")
 	if err != nil {
 		panic(err)
 	}
@@ -19,8 +29,7 @@ func GetDbConnection() {
 	if err != nil {
 		panic(err)
 	}
-	//	logger.Info("connection successful")
-	//	db.LogMode(true)
+	fmt.Println("connection successful")
 
-	// /	return db
+	return db
 }

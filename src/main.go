@@ -1,9 +1,10 @@
 package main
 
 import (
-	"gorm"
-	"gorm/logger"
 	"net/http"
+
+	_ "github.com/jinzhu/gorm/dialects/mssql"
+	"github.com/rprajapati0067/echo-web-framework/src/controllers"
 
 	"github.com/labstack/echo"
 )
@@ -11,25 +12,26 @@ import (
 func main() {
 	e := echo.New()
 
+	// db, err := gorm.Open("mssql", "sqlserver://ravi:System123@LT212-RAVISP:1433?database=employee_db")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// // Ping function checks the database connectivity
+	// err = db.DB().Ping()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println("connection successful")
+
 	e.GET("/", func(c echo.Context) error {
 
-		db, err := gorm.Open("mssql", "sqlserver://Aditi/ravisp:Jul@4362@LT212-RAVISP:1433?database=dbname")
-		if err != nil {
-			panic(err)
-		}
-
-		// Ping function checks the database connectivity
-		err = db.DB().Ping()
-		if err != nil {
-			panic(err)
-		}
-		logger.Info("connection successful")
-		db.LogMode(true)
 		return c.String(http.StatusOK, "Hello")
 	})
 
 	e.GET("/getUser", controllers.GetUser)
 	e.PUT("/addUser", controllers.AddUser)
+	e.PUT("/employees", controllers.CreateEmployee)
 
 	e.Start(":8080")
 }
